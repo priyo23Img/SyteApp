@@ -1,0 +1,559 @@
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image, ScrollView, Animated } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import Colors from '../../../assets/colors';
+import Fonts from '../../../assets/fonts';
+import Login from './Login';
+import Register from './Register';
+import { TextInput } from 'react-native-paper';
+
+const LogRegisterMain = () => {
+  const navigation = useNavigation();
+  const [isSelect, setIsSelect] = useState(1);
+  const [selectText, setSelectText] = useState(false);
+  const translateY = useRef(new Animated.Value(0)).current;
+
+  const handleSelectOption = (option) => {
+    setIsSelect(option);
+    setSelectText(!selectText);
+    // Move the container upwards
+   
+  };
+
+  const onScroll=()=>{
+    Animated.timing(translateY, {
+        toValue:  -200,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+  }
+  return (
+    <View style={styles.Container}>
+      <View style={{flexDirection:'row',alignItems:'center'}}>
+
+        <Image source={require('../../../assets/images/SyteLogo.png')} style={styles.Logo} />
+        <View>
+          <Text style={styles.Logotext}>SYTE</Text>
+          <Text style={styles.subLogotext}>AB KAAM HUA AASAAN</Text>
+        </View>
+      </View>
+
+      <View style={styles.LoginTextWrapper}>
+        <Text style={styles.LoginText}>{selectText ?  'Login Account':'Sign Up Account'}</Text>
+        <Text style={styles.LoginSubtext}>{selectText ?  'Hello, welcome back to Syte':'It’s quick and easy!'  }</Text>
+      </View>
+      {/* <View style={[styles.LogoWrapper]}> */}
+
+      <View style={styles.contentContainer}>
+        <View style={styles.contentTextWrap}>
+          <TouchableOpacity onPress={() => handleSelectOption(1)}>
+            <Text style={[styles.contentText, isSelect === 1 && styles.ButtonBorder]}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleSelectOption(2)}>
+            <Text style={[styles.contentText, isSelect === 2 && styles.ButtonBorder]}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+
+        {isSelect === 1 ? <Login /> : null}
+        {isSelect === 2 ? <Register /> : null}
+      </View>
+    
+
+    </View>
+  );
+};
+
+export default LogRegisterMain;
+
+const { width, height } = Dimensions.get('screen');
+const styles = StyleSheet.create({
+  Container: {
+    backgroundColor: Colors.MainColor,
+    width: width,
+    height: height,
+  },
+  Logo: {
+    width: 80,
+    height: 80,
+  },
+  Logotext: {
+    textTransform: 'uppercase',
+    color: Colors.CommonColor,
+    fontFamily: Fonts.LatoBold,
+    fontSize: 40,
+  },
+  subLogotext: {
+    textTransform: 'uppercase',
+    color: Colors.CommonColor,
+    fontFamily: Fonts.LatoBold,
+    letterSpacing: 5,
+    lineHeight: 20,
+  },
+  LogoWrapper: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  LoginText: {
+    color: Colors.CommonColor,
+    fontSize: 40,
+    fontFamily: Fonts.JosefinSans600,
+  },
+  LoginTextWrapper: {
+    marginHorizontal: 15,
+    marginTop: 15,
+  },
+  LoginSubtext: {
+    color: Colors.CommonColor,
+    fontFamily: Fonts.JosefinSansregular,
+    fontSize: 17,
+    marginTop: 20,
+  },
+  contentContainer: {
+    marginTop: 40,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    // marginHorizontal:10
+    height:height
+  },
+  contentText: {
+    fontFamily: Fonts.JosefinSansregular,
+    color: Colors.CommonColor,
+    fontSize: 30,
+  },
+  contentTextWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 30,
+    marginHorizontal: 25,
+  },
+  ButtonBorder: {
+    borderBottomColor: Colors.CommonColor,
+    borderBottomWidth: 1,
+  },
+});
+
+
+
+
+
+
+
+// import React, { useState, useRef } from 'react';
+// import { View, Text, TouchableOpacity, ScrollView, Animated, StyleSheet, Dimensions, Image, PanResponder } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+// import Colors from '../../../assets/colors';
+// import Fonts from '../../../assets/fonts';
+// import Login from './Login';
+// import Register from './Register';
+
+// const LogRegisterMain = () => {
+//   const navigation = useNavigation();
+//   const [isSelect, setIsSelect] = useState(false);
+//   const [selectText, setSelectText] = useState(false);
+//   const translateY = useRef(new Animated.Value(0)).current;
+//   const pan = React.useRef(new Animated.ValueXY()).current;
+ 
+//   const SCREEN_WIDTH = Dimensions.get('window').width;
+// const SCREEN_HEIGHT = Dimensions.get('window').height;
+// const VIEW_WIDTH = 100; // Adjust this according to your view's width
+// const VIEW_HEIGHT = 100; // Adjust this according to your view's height
+//   const panResponder = useRef(
+//     PanResponder.create({
+//       onMoveShouldSetPanResponder: () => true,
+//       // onPanResponderMove: (_, gesture) => {
+//       //   // Apply movement only within the boundaries
+//       //   let newX = gesture.dx;
+//       //   let newY = gesture.dy;
+//       //   if (newX < 0) {
+//       //     newX = 0;
+//       //   } else if (newX > SCREEN_WIDTH - VIEW_WIDTH) {
+//       //     newX = SCREEN_WIDTH - VIEW_WIDTH;
+//       //   }
+//       //   if (newY < 0) {
+//       //     newY = 0;
+//       //   } else if (newY > SCREEN_HEIGHT - VIEW_HEIGHT) {
+//       //     newY = SCREEN_HEIGHT - VIEW_HEIGHT;
+//       //   }
+
+//       //   Animated.event([null, { dx: pan.x, dy: pan.y }])({ dx: newX, dy: newY });
+//       // },
+//       // onPanResponderMove: (event, gesture) => {
+//       //   const { dx, dy } = gesture;
+  
+//       //   // Condition to check if the drag is happening in the middle of the screen vertically
+//       //   if (dy >= -50 && dy <= 0) {
+//       //     // Update the Y coordinate of the pan value
+//       //     pan.setValue({ x: 0, y: dy });
+//       //   }
+//       // },
+//       onPanResponderMove: Animated.event([null, {dx: pan.x, dy: pan.y}]),
+//       onPanResponderRelease: () => {
+//         pan.extractOffset();
+//       },
+//     }),
+//   ).current;
+
+//   const handleSelectOption = (option) => {
+//     setIsSelect(false);
+//     setSelectText(!selectText);
+//     // moveContainerUpwards();
+//   };
+
+//   const moveContainerUpwards = () => {
+//     if (isSelect === 2) {
+//       setIsSelect(1);
+//       setSelectText(false);
+//       Animated.timing(translateY, {
+//         toValue: 0,
+//         duration: 300,
+//         useNativeDriver: true,
+//       }).start();
+//     } else {
+//       Animated.timing(translateY, {
+//         toValue: -200, // Adjust this value as per your requirements
+//         duration: 300, // Adjust the animation duration as needed
+//         useNativeDriver: true,
+//       }).start();
+//     }
+//   };
+
+//   return (
+//     <Animated.View style={styles.Container}>
+//       <Image source={require('../../../assets/images/SyteLogo.png')} style={styles.Logo} />
+//       <View>
+//         <Text style={styles.Logotext}>SYTE</Text>
+//         <Text style={styles.subLogotext}>AB KAAM HUA AASAAN</Text>
+//       </View>
+
+//       <View style={styles.LoginTextWrapper}>
+//         <Text style={styles.LoginText}>{selectText ? 'Sign Up Account' : 'Login Account'}</Text>
+//         <Text style={styles.LoginSubtext}>{selectText ? 'It’s quick and easy!' : 'Hello, welcome back to Syte'}</Text>
+//       </View>
+      
+//         <Animated.View
+//         style={[styles.LogoWrapper,{
+//           transform: [ {translateY: pan.y}],
+//         }]}
+//         {...panResponder.panHandlers}>
+    
+//         <View style={styles.contentContainer}>
+//           <View style={styles.contentTextWrap}>
+//             <TouchableOpacity onPress={() => setIsSelect(false)}>
+//               <Text style={[styles.contentText, isSelect === 1 && styles.ButtonBorder]}>Login</Text>
+//             </TouchableOpacity>
+//             <TouchableOpacity onPress={() => setIsSelect(true)}>
+//               <Text style={[styles.contentText, isSelect === 2 && styles.ButtonBorder]}>Sign Up</Text>
+//             </TouchableOpacity>
+//           </View>
+
+//           {isSelect ? <Register /> :<Login />}
+//         </View>
+//       </Animated.View>
+//     </Animated.View>
+//   );
+// };
+
+// export default LogRegisterMain;
+
+// const { width, height } = Dimensions.get('screen');
+// const styles = StyleSheet.create({
+//   Container: {
+//     backgroundColor: Colors.MainColor,
+//     width: width,
+//     height: height,
+//   },
+//   Logo: {
+//     width: 80,
+//     height: 80,
+//   },
+//   Logotext: {
+//     textTransform: 'uppercase',
+//     color: Colors.CommonColor,
+//     fontFamily: Fonts.LatoBold,
+//     fontSize: 40,
+//   },
+//   subLogotext: {
+//     textTransform: 'uppercase',
+//     color: Colors.CommonColor,
+//     fontFamily: Fonts.LatoBold,
+//     letterSpacing: 5,
+//     lineHeight: 20,
+//   },
+//   LogoWrapper: {
+//     marginTop: 20,
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//   },
+//   LoginText: {
+//     color: Colors.CommonColor,
+//     fontSize: 40,
+//     fontFamily: Fonts.JosefinSans600,
+//   },
+//   LoginTextWrapper: {
+//     marginHorizontal: 15,
+//     marginTop: 15,
+//   },
+//   LoginSubtext: {
+//     color: Colors.CommonColor,
+//     fontFamily: Fonts.JosefinSansregular,
+//     fontSize: 17,
+//     marginTop: 20,
+//   },
+//   contentContainer: {
+//     marginTop: 40,
+//     backgroundColor: '#fff',
+//     borderTopLeftRadius: 50,
+//     borderTopRightRadius: 50,
+//   },
+//   contentText: {
+//     fontFamily: Fonts.JosefinSansregular,
+//     color: Colors.CommonColor,
+//     fontSize: 30,
+//   },
+//   contentTextWrap: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     marginTop: 30,
+//     marginHorizontal: 25,
+//   },
+//   ButtonBorder: {
+//     borderBottomColor: Colors.CommonColor,
+//     borderBottomWidth: 1,
+//   },
+// });
+// // import React, { useState, useRef, useEffect } from 'react';
+// // import { View, Text, TouchableOpacity, Dimensions, Image, StyleSheet } from 'react-native';
+// // import RBSheet from 'react-native-raw-bottom-sheet';
+// // import Login from './Login';
+// // import Register from './Register';
+// // import Colors from '../../../assets/colors';
+// // import Fonts from '../../../assets/fonts';
+
+// // const LogRegisterMain = () => {
+// //   const [isSelect, setIsSelect] = useState(1);
+// //   const [selectText, setSelectText] = useState(false);
+// //   const refRBSheet = useRef();
+
+// //   useEffect(() => {
+// //     refRBSheet.current.open();
+// //   }, []);
+
+// //   const handleSelectOption = (option) => {
+// //     setIsSelect(option);
+// //     setSelectText(!selectText);
+// //   };
+
+// //   return (
+// //     <View style={styles.Container}>
+// //       <View style={{flexDirection:'row',alignItems:'center',marginTop:50}}>
+
+// //       <Image source={require('../../../assets/images/SyteLogo.png')} style={styles.Logo} />
+// //       <View>
+// //         <Text style={styles.Logotext}>SYTE</Text>
+// //         <Text style={styles.subLogotext}>AB KAAM HUA AASAAN</Text>
+// //       </View>
+// //       </View>
+
+
+// //       <View style={styles.LoginTextWrapper}>
+// //         <Text style={styles.LoginText}>{selectText ? 'Sign Up Account' : 'Login Account'}</Text>
+// //         <Text style={styles.LoginSubtext}>{selectText ? 'It’s quick and easy!' : 'Hello, welcome back to Syte'}</Text>
+// //       </View>
+
+// //       <View style={styles.LogoWrapper}>
+// //         <RBSheet
+// //           ref={refRBSheet}
+// //           closeOnDragDown={false}
+// //           closeOnPressMask={false}
+// //           customStyles={{
+// //             wrapper: {
+// //               backgroundColor: 'transparent',
+// //             },
+// //             container: {
+// //               height: 'auto',
+// //               // paddingBottom: 30,
+// //               borderTopLeftRadius: 50,
+// //               borderTopRightRadius: 50,
+// //             },
+// //           }}
+// //         >
+// //           <View style={styles.contentTextWrap}>
+// //             <TouchableOpacity onPress={() => handleSelectOption(1)}>
+// //               <Text style={[styles.contentText, isSelect === 1 && styles.ButtonBorder]}>Login</Text>
+// //             </TouchableOpacity>
+// //             <TouchableOpacity onPress={() => handleSelectOption(2)}>
+// //               <Text style={[styles.contentText, isSelect === 2 && styles.ButtonBorder]}>Sign Up</Text>
+// //             </TouchableOpacity>
+// //           </View>
+
+// //           {isSelect === 1 ? <Login /> : null}
+// //           {isSelect === 2 ? <Register /> : null}
+// //         </RBSheet>
+// //       </View>
+// //     </View>
+// //   );
+// // };
+
+// // export default LogRegisterMain;
+
+// // const { width, height } = Dimensions.get('screen');
+// // const styles = StyleSheet.create({
+// //   Container: {
+// //     backgroundColor: Colors.MainColor,
+// //     width: width,
+// //     height: height,
+// //   },
+// //   Logo: {
+// //     width: 80,
+// //     height: 80,
+// //   },
+// //   Logotext: {
+// //     textTransform: 'uppercase',
+// //     color:  Colors.CommonColor,
+// //     fontSize: 40,
+// //   },
+// //   subLogotext: {
+// //     textTransform: 'uppercase',
+// //     color:  Colors.CommonColor,
+// //     letterSpacing: 5,
+// //     lineHeight: 20,
+// //     fontFamily:  Fonts.LatoBold,
+// //   },
+// //   LogoWrapper: {
+// //     marginTop: 20,
+// //     flexDirection: 'row',
+// //     alignItems: 'center',
+// //   },
+// //   LoginText: {
+// //     color: Colors.CommonColor,
+// //     fontSize: 40,
+// //     fontFamily: Fonts.JosefinSans600,
+// //   },
+// //   LoginTextWrapper: {
+// //     marginHorizontal: 15,
+// //     marginTop: 15,
+// //   },
+// //   LoginSubtext: {
+// //     color: Colors.CommonColor,
+// //     fontFamily:  Fonts.JosefinSansregular,
+// //     fontSize: 17,
+// //     marginTop: 20,
+// //   },
+// //   contentText: {
+// //     fontFamily: Fonts.JosefinSansregular,
+// //     color:  Colors.CommonColor,
+// //     fontSize: 30,
+// //   },
+// //   contentTextWrap: {
+// //     flexDirection: 'row',
+// //     justifyContent: 'space-between',
+// //     marginTop: 30,
+// //     marginHorizontal: 25,
+// //   },
+// //   ButtonBorder: {
+// //     borderBottomColor:  Colors.CommonColor,
+// //     borderBottomWidth: 1,
+// //   },
+// // });
+
+// import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image, ScrollView, Animated } from 'react-native';
+// import React, { useState, useRef } from 'react';
+// import { useNavigation } from '@react-navigation/native';
+// import Colors from '../../../assets/colors';
+// import Fonts from '../../../assets/fonts';
+// import Login from './Login';
+// import Register from './Register';
+// import { TextInput } from 'react-native-paper';
+
+// const LogRegisterMain = () => {
+//   const navigation = useNavigation();
+//   const [isSelect, setIsSelect] = useState(1);
+//   const [selectText, setSelectText] = useState(false);
+//   const translateY = useRef(new Animated.Value(0)).current;
+//   const scrollA = useRef(new Animated.Value(0)).current;
+//   const handleSelectOption = (option) => {
+//     setIsSelect(option);
+//     setSelectText(!selectText);
+//     // Move the container upwards
+
+//   };
+
+//   const onScroll=()=>{
+//     Animated.timing(translateY, {
+//         toValue:  -200,
+//         duration: 300,
+//         useNativeDriver: true,
+//       }).start();
+//   }
+//   const BANNER_H = 350;
+//   const styles1 = {
+//     bannerContainer: {
+//       marginTop: -1000,
+//       paddingTop: 1000,
+//       alignItems: 'center',
+//       overflow: 'hidden',
+//     },
+//     banner: scrollA => ({
+//       height: BANNER_H,
+//       width: '200%',
+//       transform: [
+//         {
+//           translateY: scrollA.interpolate({
+//             inputRange: [-BANNER_H, 0, BANNER_H, BANNER_H + 1],
+//             outputRange: [-BANNER_H / 2, 0, BANNER_H * 0.75, BANNER_H * 0.75],
+//           }),
+//         },
+//         {
+//           scale: scrollA.interpolate({
+//             inputRange: [-BANNER_H, 0, BANNER_H, BANNER_H + 1],
+//             outputRange: [2, 1, 0.5, 0.5],
+//           }),
+//         },
+//       ],
+//     }),
+//   };
+//   return (
+//     <ScrollView style={styles.Container} onScroll={()=>{Animated.event(
+//       [{nativeEvent: {contentOffset: {y: scrollA}}}],
+//       {useNativeDriver: true},
+//     )}}
+//     scrollEventThrottle={16}>
+//       <Animated.View style={[{flexDirection:'row',alignItems:'center'},styles1.banner(scrollA)]}>
+
+//         <Image source={require('../../../assets/images/SyteLogo.png')} style={styles.Logo} />
+//         <View>
+//           <Text style={styles.Logotext}>SYTE</Text>
+//           <Text style={styles.subLogotext}>AB KAAM HUA AASAAN</Text>
+//         </View>
+//       </Animated.View>
+
+//       <View style={styles.LoginTextWrapper}>
+//         <Text style={styles.LoginText}>{selectText ?  'Login Account':'Sign Up Account'}</Text>
+//         <Text style={styles.LoginSubtext}>{selectText ?  'Hello, welcome back to Syte':'It’s quick and easy!'  }</Text>
+//       </View>
+//       {/* <View style={[styles.LogoWrapper]}> */}
+
+//       <View style={styles.contentContainer}>
+//         <View style={styles.contentTextWrap}>
+//           <TouchableOpacity onPress={() => handleSelectOption(1)}>
+//             <Text style={[styles.contentText, isSelect === 1 && styles.ButtonBorder]}>Login</Text>
+//           </TouchableOpacity>
+//           <TouchableOpacity onPress={() => handleSelectOption(2)}>
+//             <Text style={[styles.contentText, isSelect === 2 && styles.ButtonBorder]}>Sign Up</Text>
+//           </TouchableOpacity>
+//         </View>
+
+//         {isSelect === 1 ? <Login /> : null}
+//         {isSelect === 2 ? <Register /> : null}
+//       </View>
+
+
+//     </ScrollView>
+//   );
+// };
+
+// export default LogRegisterMain;
+
+// const { width, height } = Dimensions.get('screen');
