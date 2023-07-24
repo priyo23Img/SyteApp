@@ -246,6 +246,6 @@ const styles = StyleSheet.create({
         shadowColor: 'rgba(0,0,0.25)',
         shadowOffset: { width: -2, height: 3},
         shadowOpacity: 0.5,
-        shadowRadius: 3,
+        // shadowRadius: 3,
       },
 })
